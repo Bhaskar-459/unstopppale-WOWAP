@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Dashboard</title>
@@ -288,7 +289,9 @@
                         checkTd.appendChild(checkbox);
                         prescriptionRow.appendChild(checkTd);
 
-                        prescriptionRow.classList.add(statusClass);
+                        if (statusClass) {
+                            prescriptionRow.classList.add(statusClass);
+                        }
                         table.appendChild(prescriptionRow);
                     });
                 }
@@ -302,3 +305,4 @@
     </script>
 </body>
 </html>
+
