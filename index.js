@@ -1,12 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import path from 'path';
+
+const __dirname = path.resolve();
 
 const app = express();
 const port = 3000;
 
 import {routes} from './Backend/routes.js';
 
-app.use(express.static('images'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json()); // For parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 
