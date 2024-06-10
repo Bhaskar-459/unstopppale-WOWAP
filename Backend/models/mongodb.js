@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
-mongoose.connect('mongodb://localhost:27017/patientdb', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -17,11 +19,22 @@ const PatientSchema = new mongoose.Schema({
         {
             name: String,
             dosage: Number,
-            time: String
+            time: String,
+            check: {
+                done:
+                {
+                    type: Boolean,
+                    default: false
+                },
+                done_time: {
+                    type: Date,
+                    default: null
+                }
+            }
         }
     ],
     disease: String,
-    check : Boolean
+
 });
 
 const PatientModel = mongoose.model('Patient', PatientSchema);

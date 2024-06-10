@@ -1,21 +1,21 @@
-
 import PatientModel from './models/mongodb.js';
 import path from 'path';
 
 let __dirname = path.resolve();
+
 export const routes = (app) => {
     app.get('/', async (req, res) => {
         res.redirect('/recipient');
     });
-    
+
     app.get('/doctor', async (req, res) => {
-        res.sendFile(__dirname + '/Frontend/doctor/doctorindex.html');
+        res.sendFile(path.join(__dirname, '/Frontend/doctor/doctorindex.html'));
     });
-    
+
     app.get('/nurse', async (req, res) => {
-        res.sendFile(__dirname + "/Frontend/nurse/nurseindex.html");
-    });  
-    
+        res.sendFile(path.join(__dirname, "/Frontend/nurse/nurseindex.html"));
+    });
+
     app.get('/doctordata', async (req, res) => {
         try {
             const patients = await PatientModel.find();
@@ -24,28 +24,28 @@ export const routes = (app) => {
             res.status(500).send(error.message);
         }
     });
-    
+
     app.get('/doctorpatient/:id', async (req, res) => {
         try {
-            res.sendFile(__dirname + '/Frontend/doctor/doctorpatient.html');
+            res.sendFile(path.join(__dirname, '/Frontend/doctor/doctorpatient.html'));
         } catch (error) {
             res.status(500).send(error.message);
         }
     });
-    
+
     app.get('/doctorpatientdata/:id', async (req, res) => {
         try {
             const patient = await PatientModel.findById(req.params.id);
-            console.log(patient, req.params.id);
+            console.log("hehehehe",patient, req.params.id);
             res.json(patient);
         } catch (error) {
             res.status(500).send(error.message);
         }
     });
-    
+
     app.post('/doctorpatient', async (req, res) => {
         try {
-            console.log(req.body);
+            
             const { patientId, medicineName, dosage, time } = req.body;
             const patient = await PatientModel.findById(patientId);
     
@@ -53,11 +53,11 @@ export const routes = (app) => {
                 return res.status(404).send('Patient not found');
             }
     
+            // Include the check object with done status in the prescription data
             patient.medicine.push({
                 name: medicineName,
                 dosage: dosage,
-                time: time,
-                check: false
+                time: time
             });
     
             await patient.save();
@@ -67,10 +67,11 @@ export const routes = (app) => {
         }
     });
     
+
     app.post('/updatecheck/:id', async (req, res) => {
         try {
             const medicationId = req.params.id;
-            const { check } = req.body;
+            const { done,done_time } = req.body;
     
             // Find the patient containing this medication
             const patient = await PatientModel.findOne({ 'medicine._id': medicationId });
@@ -80,8 +81,19 @@ export const routes = (app) => {
             }
     
             // Update the check status of the medication
-            const medication = patient.medicine.id(medicationId);
-            medication.check = check;
+            let medication = patient.medicine.id(medicationId);
+    
+            // Update the check object properties separately
+           
+            if (done !== undefined) {
+                console.log('Check done:', done);
+                medication.check.done = done;
+            }
+            if (done_time !== undefined) {
+                medication.check.done_time = done_time ? new Date() : null;
+            }
+    
+            console.log('Medication after update:', medication);
             await patient.save();
     
             res.send({ message: 'Check status updated successfully' });
@@ -91,19 +103,22 @@ export const routes = (app) => {
         }
     });
     
-    app.get('/recipient', async (req, res) => {
-        res.sendFile(__dirname + '/Frontend/recipient/recipient.html');
-    });
     
+
+    app.get('/recipient', async (req, res) => {
+        res.sendFile(path.join(__dirname, '/Frontend/recipient/recipient.html'));
+    });
+
     app.get('/recipientdata', async (req, res) => {
         try {
             const patients = await PatientModel.find();
+            console.log(patients);
             res.send(patients);
         } catch (error) {
             res.status(500).send(error.message);
         }
     });
-    
+
     app.post('/addpatient', async (req, res) => {
         try {
             const patient = new PatientModel(req.body);
