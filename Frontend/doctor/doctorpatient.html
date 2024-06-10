@@ -61,7 +61,7 @@
                     <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                 </form>
 
-                <table id="table" class="table mt-4" data-url="/doctor">
+                <table id="table" class="table mt-4">
                     <thead>
                         <tr>
                             <th data-field="Medicine">Medicine</th>
@@ -92,63 +92,76 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.6/dist/bootstrap-table.min.js"></script>
     <script>
         $(document).ready(function () {
-            const path = window.location.pathname;
-            const parts = path.split('/');
-            const patientId = parts[parts.length - 1];
-            console.log(patientId);
+    const path = window.location.pathname;
+    const parts = path.split('/');
+    const patientId = parts[parts.length - 1];
+    console.log(patientId);
 
-            if (patientId) {
-                // Fetch patient details
-                $.get(`/doctorpatientdata/${patientId}`, function (data) {
-                    document.getElementById('cardname').value = data.name;
-                    $('#patientName').text(`Patient Name: ${data.name}`);
-                    $('#patientId').text(`Patient Id: ${data.id}`);
-                    $('#patientAge').text(`Age: ${data.age}`);
-                    $('#patientGender').text(`Gender: ${data.gender}`);
+    if (patientId) {
+        // Fetch patient details and populate the table
+        $('#table').bootstrapTable();
+        // data url to bootstrap table 
+        $('#table').bootstrapTable('refreshOptions', {
+            url: `/doctorpatientdata/${patientId}`,
+        });
+        $.get(`/doctorpatientdata/${patientId}`, function (data) {
+            document.getElementById('cardname').value = data.name;
+            $('#patientName').text(`Patient Name: ${data.name}`);
+            $('#patientId').text(`Patient Id: ${data.id}`);
+            $('#patientAge').text(`Age: ${data.age}`);
+            $('#patientGender').text(`Gender: ${data.gender}`);
+
+
+            // Append each existing medication to the table
+            data.medicine.forEach(element => {
+                
+                $('#table').bootstrapTable('append', {
+                    Medicine: element.name,
+                    Dosage: element.dosage,
+                    Time: element.time
                 });
-            }
-
-            // Handle form submission for adding prescription
-            $('#Add_press').click(function () {
-                const medicineName = $('#Medicine').val();
-                const dosage = $('#Dosage').val();
-                const time = $('#Time').val();
-                if(!medicineName || !dosage || !time) {
-                    alert('Please fill all the fields');
-                    return;
-                }
-                console.log(medicineName, dosage, time);
-
-                $.post('/doctorpatient', {
-                    patientId: patientId,
-                    medicineName: medicineName,
-                    dosage: dosage,
-                    time: time
-                },  function (data, status) {
-                    if (status === 'success') {
-                        // Prescription added successfully, update the table
-                        $('#table').bootstrapTable('append', {
-                            Medicine: medicineName,
-                            Dosage: dosage,
-                            Time: time
-                        });
-                    } else {
-                        console.error('Failed to add prescription');
-                    }
-                });
-            });
-
-            // Bootstrap Table initialization
-            $('#table').bootstrapTable();
-
-            // Submit form (optional, you can remove this if not needed)
-            $('#prescriptionForm').submit(function (event) {
-                event.preventDefault();
-                alert('Form submitted successfully');
-                window.location.href = '/doctor';
-                // Add your form submission logic here if needed
             });
         });
+    }
+
+    // Handle form submission for adding prescription
+    $('#Add_press').click(function () {
+        const medicineName = $('#Medicine').val();
+        const dosage = $('#Dosage').val();
+        const time = $('#Time').val();
+        if (!medicineName || !dosage || !time) {
+            alert('Please fill all the fields');
+            return;
+        }
+
+        $.post('/doctorpatient', {
+            patientId: patientId,
+            medicineName: medicineName,
+            dosage: dosage,
+            time: time,
+        }, function (data, status) {
+            if (status === 'success') {
+                // Prescription added successfully, update the table
+                $('#table').bootstrapTable('append', {
+                    Medicine: medicineName,
+                    Dosage: dosage,
+                    Time: time
+                });
+            } else {
+                console.error('Failed to add prescription');
+            }
+        });
+    });
+
+    // Submit form (optional, you can remove this if not needed)
+    $('#prescriptionForm').submit(function (event) {
+        event.preventDefault();
+        alert('Form submitted successfully');
+        window.location.href = '/doctor';
+        // Add your form submission logic here if needed
+    });
+});
+
     </script>
 </body>
 </html>
