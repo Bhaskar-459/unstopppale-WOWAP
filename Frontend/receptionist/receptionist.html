@@ -23,10 +23,10 @@
                         <a class="nav-link active" href="/receptionist">Receptionist</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/doctor">Doctor</a>
+                        <a class="nav-link" id="doctorid" href="/doctor">Doctor</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/nurse">Nurse</a>
+                        <a class="nav-link" id="nurseid" href="/nurse">Nurse</a>
                     </li>
 
                 </ul>
@@ -56,7 +56,7 @@
                         <!-- <input type="text" class="form-control" id="Gender" required> -->
                          <select name="Gender" id="Gender" class="form-control">
                             <option value ="Male" > Male</option>
-                            <option value ="FeMale" > FeMale</option>
+                            <option value ="Female" > Female</option>
                          </select>
                     </div>
                     <div class="mb-3">
@@ -94,7 +94,7 @@
         $(document).ready(function() {
             async function fetchPatients() {
                 try {
-                    const response = await fetch('/recipientdata');
+                    const response = await fetch('/receptionist/data');
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
@@ -156,5 +156,16 @@
             fetchPatients();  // Fetch and display patients on page load
         });
     </script>
+
+<script>
+    document.getElementById("nurseid").addEventListener("click", function(){
+        alert("You are not authorized to access this page , please login as nurse");
+    });
+</script>
+<script>
+    document.getElementById("doctorid").addEventListener("click", function(){
+        alert("You are not authorized to access this page , please login as doctor");
+    });
+</script>
 </body>
 </html>

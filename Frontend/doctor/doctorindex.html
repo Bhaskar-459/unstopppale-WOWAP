@@ -32,13 +32,13 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="receptionistid">
                         <a class="nav-link" href="/receptionist">Receptionist</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/doctor">Doctor</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="nurseid">
                         <a class="nav-link" href="/nurse">Nurse</a>
                     </li>
 
@@ -106,6 +106,17 @@
                     window.location.href = `/doctor/doctorpatient/${patientId}`;
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById("receptionistid").addEventListener("click", function(){
+            alert("You are not authorized to access this page , please login as receptionist");
+        });
+    </script>
+    <script>
+        document.getElementById("nurseid").addEventListener("click", function(){
+            alert("You are not authorized to access this page , please login as nurse");
         });
     </script>
 </body>
