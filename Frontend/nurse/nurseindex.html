@@ -120,10 +120,10 @@
                     <a class="nav-link" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/receptionist">Receptionist</a>
+                    <a class="nav-link" id ="receptionistid" href="/receptionist">Receptionist</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/doctor">Doctor</a>
+                    <a class="nav-link" id="doctorid" href="/doctor">Doctor</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="/nurse">Nurse</a>
@@ -306,6 +306,17 @@
 
 
     fetchPatients();
+</script>
+
+<script>
+    document.getElementById("doctorid").addEventListener("click", function(){
+        alert("You are not authorized to access this page , please login as doctor");
+    });
+</script>
+<script>
+    document.getElementById("nurseid").addEventListener("click", function(){
+        alert("You are not authorized to access this page , please login as nurse");
+    });
 </script>
 </body>
 </html>
