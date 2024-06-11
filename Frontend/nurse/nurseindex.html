@@ -120,13 +120,13 @@
                     <a class="nav-link" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/recipient">Recipient</a>
+                    <a class="nav-link" href="/receptionist">Receptionist</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/doctor">Doctor</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/nurse">Nurse</a>
+                    <a class="nav-link active" href="/nurse">Nurse</a>
                 </li>
             </ul>
             <form class="d-flex" role="search">
@@ -168,7 +168,7 @@
 
     async function fetchPatients() {
         try {
-            const response = await fetch('/doctordata');
+            const response = await fetch('/nurse/patientdata');
             if (!response.ok) {
                 throw new Error('Failed to fetch patients');
             }
@@ -285,7 +285,7 @@
     async function handleCheckboxChange(medicationId, isChecked) {
     try {
         console.log('Updating check status:', medicationId, isChecked); // Debugging statement
-        const response = await fetch(`/updatecheck/${medicationId}`, {
+        const response = await fetch(`/nurse/updatecheck/${medicationId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
