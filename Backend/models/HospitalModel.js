@@ -21,8 +21,7 @@ const PatientSchema = new mongoose.Schema({
             dosage: Number,
             time: String,
             check: {
-                done:
-                {
+                done: {
                     type: Boolean,
                     default: false
                 },
@@ -33,10 +32,10 @@ const PatientSchema = new mongoose.Schema({
             }
         }
     ],
-    disease: String,
-
+    disease: String
 });
 
 const PatientModel = mongoose.model('Patient', PatientSchema);
 
 export default PatientModel;
+

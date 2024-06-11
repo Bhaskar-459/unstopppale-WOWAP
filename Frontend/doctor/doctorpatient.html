@@ -21,10 +21,10 @@
                         <a class="nav-link" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/recipient">Recipient</a>
+                        <a class="nav-link" href="/receptionist">Receptionist</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/doctor">Doctor</a>
+                        <a class="nav-link active" href="/doctor">Doctor</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/nurse">Nurse</a>
@@ -102,9 +102,9 @@
                 $('#table').bootstrapTable();
                 // data url to bootstrap table 
                 $('#table').bootstrapTable('refreshOptions', {
-                    url: `/doctorpatientdata/${patientId}`,
+                    url: `/doctor/doctorpatientdata/${patientId}`,
                 });
-                $.get(`/doctorpatientdata/${patientId}`, function (data) {
+                $.get(`/doctor/doctorpatientdata/${patientId}`, function (data) {
                     document.getElementById('cardname').value = data.name;
                     $('#patientName').text(`Patient Name: ${data.name}`);
                     $('#patientId').text(`Patient Id: ${data.id}`);
@@ -136,7 +136,7 @@
                     return;
                 }
 
-                $.post('/doctorpatient', {
+                $.post('/doctor/doctorpatient', {
                     patientId: patientId,
                     medicineName: medicineName,
                     dosage: dosage,
