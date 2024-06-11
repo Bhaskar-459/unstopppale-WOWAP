@@ -145,8 +145,7 @@
                     alert('New patient added successfully: ' + JSON.stringify(newPatient));
                     fetchPatients();
                       // Refresh the table data
-                      // navigate to the new patient's page
-                      window.location.href = `/doctor`;
+                      window.location.href = `/receptionist`;
                 } catch (error) {
                     console.error('Error adding new patient:', error);
                     alert('Error adding new patient');
