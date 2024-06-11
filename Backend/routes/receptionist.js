@@ -1,12 +1,12 @@
 import express from 'express';
 import path from 'path';
 import  PatientModel  from '../models/HospitalModel.js';
-import e from 'express';
+
 
 const router = express.Router();
 let __dirname = path.resolve();
 router.get('/', async (req, res) => {
-    res.sendFile(path.join(__dirname, '/Frontend/recipient/recipient.html'));
+    res.sendFile(path.join(__dirname, '/Frontend/receptionist/receptionist.html'));
 });
 
 router.get('/data', async (req, res) => {
